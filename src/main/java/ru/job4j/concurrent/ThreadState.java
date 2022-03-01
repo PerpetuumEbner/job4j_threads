@@ -10,16 +10,13 @@ public class ThreadState {
                 () -> {
                 }
         );
-        System.out.println(first.getState());
         first.start();
-        while (first.getState() != Thread.State.TERMINATED) {
-            System.out.println(first.getName());
-        }
         second.start();
-        while (second.getState() != Thread.State.TERMINATED) {
+        while (first.getState() != Thread.State.TERMINATED
+        || second.getState() != Thread.State.TERMINATED) {
+            System.out.println(first.getName());
             System.out.println(second.getName());
         }
-        System.out.println(first.getState());
-        System.out.println(second.getState());
+        System.out.println(Thread.currentThread().getName() + " : работа завершена");
     }
 }
