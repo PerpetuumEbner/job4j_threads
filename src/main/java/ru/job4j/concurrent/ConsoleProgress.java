@@ -21,14 +21,14 @@ public class ConsoleProgress implements Runnable {
 
     @Override
     public void run() {
+        String[] symbols = {"\\", "|", "/"};
+
         while (!Thread.currentThread().isInterrupted()) {
             try {
-                System.out.print("\r load: " + " \\ ");
-                Thread.sleep(500);
-                System.out.print("\r load: " + " | ");
-                Thread.sleep(500);
-                System.out.print("\r load: " + " / ");
-                Thread.sleep(500);
+                for (String symbol : symbols) {
+                    System.out.print("\r load: " + symbol);
+                    Thread.sleep(500);
+                }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 System.out.println("\n Поток прерван.");
