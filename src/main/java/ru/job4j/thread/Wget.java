@@ -22,25 +22,33 @@ public class Wget implements Runnable {
              FileOutputStream fileOutputStream = new FileOutputStream(path)) {
             byte[] dataBuffer = new byte[1024];
             int bytesRead;
+            long bytesWritten = 0;
             long start = System.currentTimeMillis();
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
-                System.out.println("");
+                bytesWritten += bytesRead;
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
-                long time = System.currentTimeMillis() - start;
-                if (time < speed) {
-                    Thread.sleep(speed - time);
+                if (bytesWritten >= speed) {
+                    long time = System.currentTimeMillis() - start;
+                    if (time < 1000) {
+                        Thread.sleep(1000 - time);
+                    }
                 }
-                start = System.currentTimeMillis();
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
         System.out.print("Complete");
     }
 
     public static void checkArgs(String[] args) throws InterruptedException {
         if (args.length != 3) {
-            throw new InterruptedException("Ошибка инициализации аргументов.");
+            throw new InterruptedException("Не верно или не указаны аргументы!! Проверьте параметры:"
+                    + "\n args[1] - URL"
+                    + "\n args[2] - Скорость в B/s"
+                    + "\n args[3] - Путь сохранения файла"
+            );
         }
     }
 
