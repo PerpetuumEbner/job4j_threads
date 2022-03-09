@@ -3,7 +3,16 @@ package ru.job4j.thread;
 import java.io.*;
 import java.net.URL;
 
+/**
+ * В классе происходит загрузка данных из источника с ограничением по скорости.
+ *
+ * @author yustas
+ * @version 1.0
+ */
 public class Wget implements Runnable {
+    /**
+     * Объект класса принимает параметры для скачивания данных.
+     */
     private final String url;
     private final int speed;
     private final String path;
@@ -14,7 +23,12 @@ public class Wget implements Runnable {
         this.path = path;
     }
 
-
+    /**
+     * В методе указывается источник для загрузки и путь для хранения данных.
+     * Считывание происходит с помощью буферизации с ограничением в 1024 байта за раз.
+     * Если счётчик количества прочитанных байтов больше или равен чем заявленная скорость,
+     * то засекается время выполнения считывания, и происходит расчет задержки потока для ограничения скорости.
+     */
     @Override
     public void run() {
         System.out.println("Speed: " + speed + " B/s.");
@@ -28,9 +42,11 @@ public class Wget implements Runnable {
                 bytesWritten += bytesRead;
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
                 if (bytesWritten >= speed) {
+                    bytesWritten = 0;
                     long time = System.currentTimeMillis() - start;
                     if (time < 1000) {
                         Thread.sleep(1000 - time);
+                        start = System.currentTimeMillis();
                     }
                 }
             }
@@ -42,6 +58,10 @@ public class Wget implements Runnable {
         System.out.print("Complete");
     }
 
+    /**
+     * @param args Метод проверяет количество и корректность заполнения параметров,
+     *             выдавая предупреждение об ошибке.
+     */
     public static void checkArgs(String[] args) throws InterruptedException {
         if (args.length != 3) {
             throw new InterruptedException("Не верно или не указаны аргументы!! Проверьте параметры:"
