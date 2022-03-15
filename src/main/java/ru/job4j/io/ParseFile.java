@@ -38,17 +38,17 @@ public final class ParseFile implements Content {
      */
     @Override
     public synchronized String content(Predicate<Character> filter) {
-        String output = "";
+        StringBuilder output = new StringBuilder();
         int data;
         try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file))) {
-            while ((data = bis.read()) > 0) {
+            while ((data = bis.read()) != -1) {
                 if (filter.test((char) data)) {
-                    output += (char) data;
+                    output.append((char) data);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return output;
+        return output.toString();
     }
 }
