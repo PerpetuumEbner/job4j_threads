@@ -19,14 +19,14 @@ public final class ParseFile implements Content {
     /**
      * @return Возвращает строку с записанным текстом.
      */
-    public synchronized String getContent() throws IOException {
+    public String getContent() throws IOException {
         return content(data -> data < 0x80);
     }
 
     /**
      * @return Возвращает строку с записанным текстом.
      */
-    public synchronized String getContentWithoutUnicode() throws IOException {
+    public String getContentWithoutUnicode() throws IOException {
         return content(data -> true);
     }
 

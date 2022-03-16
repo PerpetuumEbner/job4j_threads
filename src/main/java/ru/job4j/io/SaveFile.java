@@ -23,10 +23,11 @@ public final class SaveFile {
      *
      * @param content Строка из которой считываются данные с помощью буфера.
      */
-    public void saveContent(String content) throws IOException {
+    public synchronized void saveContent(String content) throws IOException {
         try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file))) {
-            byte[] buffer = content.getBytes();
-            bos.write(buffer, 0, buffer.length);
+            for (int index = 0; index < content.length(); index += 1) {
+                bos.write(content.charAt(index));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
