@@ -17,57 +17,60 @@ import java.util.Queue;
 public class SimpleBlockingQueue<T> {
     @GuardedBy("this")
     private final Queue<T> queue = new LinkedList<>();
-    private final int SIZE = 10;
+    private final int SIZE;
+
+    public SimpleBlockingQueue(int SIZE) {
+        this.SIZE = SIZE;
+    }
 
     /**
      * В очередь вставляются значения пока она не будет заполнена.
      *
      * @param value вставка значения в очередь.
      */
-    public void offer(T value) {
+    public void offer(T value) throws InterruptedException {
         synchronized (queue) {
             while (queue.size() == SIZE) {
-                try {
-                    queue.wait();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
+                queue.wait();
             }
             queue.add(value);
             queue.notifyAll();
         }
-
     }
 
     /**
      * Из очереди берутся значения пока она не окажется пустой.
      */
-    public void poll() {
+    public T poll() throws InterruptedException {
         synchronized (queue) {
             while (queue.isEmpty()) {
-                try {
-                    queue.wait();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-                queue.remove();
-                queue.notifyAll();
+                queue.wait();
             }
+            queue.notifyAll();
         }
+        return queue.remove();
     }
 
     public static void main(String[] args) {
-        SimpleBlockingQueue<Integer> sbq = new SimpleBlockingQueue<>();
+        SimpleBlockingQueue<Integer> sbq = new SimpleBlockingQueue<>(10);
         Thread fist = new Thread(
                 () -> {
                     System.out.println(Thread.currentThread().getName());
-                    sbq.offer(5);
+                    try {
+                        sbq.offer(5);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
                 }
         );
         Thread second = new Thread(
                 () -> {
                     System.out.println(Thread.currentThread().getName());
-                    sbq.poll();
+                    try {
+                        sbq.poll();
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
                 }
         );
         fist.start();
