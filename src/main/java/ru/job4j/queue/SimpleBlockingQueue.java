@@ -28,27 +28,24 @@ public class SimpleBlockingQueue<T> {
      *
      * @param value вставка значения в очередь.
      */
-    public void offer(T value) throws InterruptedException {
-        synchronized (queue) {
-            while (queue.size() == SIZE) {
-                queue.wait();
-            }
-            queue.add(value);
-            queue.notifyAll();
+    public synchronized void offer(T value) throws InterruptedException {
+        while (queue.size() == SIZE) {
+            wait();
         }
+        queue.add(value);
+        notifyAll();
     }
 
     /**
      * Из очереди берутся значения пока она не окажется пустой.
      */
-    public T poll() throws InterruptedException {
-        synchronized (queue) {
-            while (queue.isEmpty()) {
-                queue.wait();
-            }
-            queue.notifyAll();
+    public synchronized T poll() throws InterruptedException {
+        while (queue.isEmpty()) {
+            wait();
         }
-        return queue.remove();
+        T rst = queue.poll();
+        notifyAll();
+        return rst;
     }
 
     public static void main(String[] args) {
