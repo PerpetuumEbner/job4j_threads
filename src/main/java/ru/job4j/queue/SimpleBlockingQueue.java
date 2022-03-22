@@ -48,6 +48,13 @@ public class SimpleBlockingQueue<T> {
         return rst;
     }
 
+    /**
+     * @return Пустая очередь или нет.
+     */
+    public boolean isEmpty() {
+        return queue.isEmpty();
+    }
+
     public static void main(String[] args) {
         SimpleBlockingQueue<Integer> sbq = new SimpleBlockingQueue<>(10);
         Thread fist = new Thread(
