@@ -6,11 +6,11 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 public class CacheTest {
-    Cache cache = new Cache();
-    Base base = (new Base(1, 1));
 
     @Test
     public void whenAddModel() {
+        Cache cache = new Cache();
+        Base base = (new Base(1, 1));
         base.setName("Base");
         cache.add(base);
         assertThat(cache.getCache().get(1).getId(), is(base.getId()));
@@ -20,6 +20,8 @@ public class CacheTest {
 
     @Test
     public void whenUpdateModel() {
+        Cache cache = new Cache();
+        Base base = (new Base(1, 1));
         base.setName("Base");
         cache.add(base);
         Base newBase = (new Base(1, 1));
@@ -31,13 +33,18 @@ public class CacheTest {
 
     @Test
     public void whenDeleteModel() {
+        Cache cache = new Cache();
+        Base base = (new Base(1, 1));
         base.setName("Base");
         cache.add(base);
         cache.delete(base);
         assertTrue(cache.getCache().isEmpty());
     }
+
     @Test(expected = OptimisticException.class)
     public void whenFailedToUpdate() {
+        Cache cache = new Cache();
+        Base base = (new Base(1, 1));
         base.setName("Base");
         cache.add(base);
         Base newBase = (new Base(1, 2));
