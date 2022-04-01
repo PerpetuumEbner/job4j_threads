@@ -8,7 +8,7 @@ import java.util.concurrent.ExecutionException;
  * в которой происходит подсчёт суммы элементов строк и столбцов двумерной матрицы.
  *
  * @author yustas
- * @version 1.0
+ * @version 3.0
  */
 public class RowColSum {
     /**
