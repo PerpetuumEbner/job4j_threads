@@ -18,7 +18,7 @@ public class RowColSumTest {
                 {4, 5, 6},
                 {7, 8, 9}
         };
-        RowColSum.Sums[] sums = sum(matrix);
+        Sums[] sums = sum(matrix);
         assertThat(sums[0].getRowSum(), is(6));
         assertThat(sums[0].getColSum(), is(12));
         assertThat(sums[1].getRowSum(), is(15));
@@ -34,7 +34,7 @@ public class RowColSumTest {
                 {4, 5, 6},
                 {7, 8, 9}
         };
-        RowColSum.Sums[] sums = asyncSum(matrix);
+        Sums[] sums = asyncSum(matrix);
         assertThat(sums[0].getRowSum(), is(6));
         assertThat(sums[0].getColSum(), is(12));
         assertThat(sums[1].getRowSum(), is(15));
