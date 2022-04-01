@@ -19,4 +19,12 @@ public class Sums {
     public void setColSum(int colSum) {
         this.colSum = colSum;
     }
+
+    @Override
+    public String toString() {
+        return "Sums{" +
+                "rowSum=" + rowSum +
+                ", colSum=" + colSum +
+                '}';
+    }
 }
