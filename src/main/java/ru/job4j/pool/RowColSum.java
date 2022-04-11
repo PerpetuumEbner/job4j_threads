@@ -87,8 +87,4 @@ public class RowColSum {
             return sums;
         });
     }
-
-    /**
-     * Модель класса.
-     */
 }

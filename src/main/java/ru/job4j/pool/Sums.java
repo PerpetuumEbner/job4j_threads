@@ -1,5 +1,8 @@
 package ru.job4j.pool;
 
+/**
+ * Модель класса.
+ */
 public class Sums {
     private int rowSum;
     private int colSum;
